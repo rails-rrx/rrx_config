@@ -1,0 +1,14 @@
+{
+  "spec_config": true,
+  "some": {
+    "config": "here"
+  },
+  "other_value": 12,
+  "database": {
+    "adapter": "sqlite3",
+    "pool": 5,
+    "timeout": 5000,
+    "database": "storage/development.sqlite3",
+    "from_spec_config": true
+  }
+}

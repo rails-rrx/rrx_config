@@ -5,7 +5,12 @@
 /doc/
 /pkg/
 /spec/reports/
+/spec/dummy/log
+/spec/dummy/storage
+/spec/dummy/tmp
 /tmp/
+
+!**/*.keep
 
 # rspec failure tracking
 .rspec_status

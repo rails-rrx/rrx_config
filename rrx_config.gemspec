@@ -1,26 +1,26 @@
 # frozen_string_literal: true
 
-require_relative "lib/rrx_config/version"
-
-SOURCE_URI = 'https://github.com/rrx/rrx_config'
-HOMEPAGE_URI = SOURCE_URI
+require_relative 'lib/rrx_config/version'
 
 Gem::Specification.new do |spec|
-  spec.name = "rrx_config"
-  spec.version = RrxConfig::VERSION
-  spec.authors = ["Dan Drew"]
-  spec.email = ["dan.drew@hotmail.com"]
+  source_uri = 'https://github.com/rails-rrx/rrx_config'
+  home_uri = source_uri
 
-  spec.summary = "Ruby on Rails support for environment-base configuration"
+  spec.name = 'rrx_config'
+  spec.version = RrxConfig::VERSION
+  spec.authors = ['Dan Drew']
+  spec.email = ['dan.drew@hotmail.com']
+
+  spec.summary = 'Ruby on Rails support for environment-base configuration'
   # spec.description = "TODO: Write a longer description or delete this line."
-  spec.homepage = HOMEPAGE_URI
-  spec.license = "MIT"
-  spec.required_ruby_version = ">= 2.6.0"
+  spec.homepage = home_uri
+  spec.license = 'MIT'
+  spec.required_ruby_version = '>= 3.1'
 
   # spec.metadata["allowed_push_host"] = "TODO: Set to your gem server 'https://example.com'"
 
-  spec.metadata["homepage_uri"] = spec.homepage
-  spec.metadata["source_code_uri"] = SOURCE_URI
+  spec.metadata['homepage_uri'] = spec.homepage
+  spec.metadata['source_code_uri'] = source_uri
   # spec.metadata["changelog_uri"] = "TODO: Put your gem's CHANGELOG.md URL here."
 
   # Specify which files should be added to the gem when it is released.
@@ -30,9 +30,9 @@ Gem::Specification.new do |spec|
       (File.expand_path(f) == __FILE__) || f.start_with?(*%w[bin/ test/ spec/ features/ .git .circleci appveyor])
     end
   end
-  spec.bindir = "exe"
+  spec.bindir = 'exe'
   spec.executables = spec.files.grep(%r{\Aexe/}) { |f| File.basename(f) }
-  spec.require_paths = ["lib"]
+  spec.require_paths = ['lib']
 
   spec.add_dependency 'railties'
 end
