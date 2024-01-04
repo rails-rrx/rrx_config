@@ -1,0 +1,5 @@
+inherit_gem:
+  rrx_dev: config/rubocop.yml
+
+##
+# Add project specific cops below
