@@ -1,9 +1,6 @@
 # RrxConfig
 
-
-TODO: Delete this and the text below, and describe your gem
-
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/rrx_config`. To experiment with that code, run `bin/console` for an interactive prompt.
+Ruby on Rails application configuration support.
 
 ## Installation
 
@@ -17,7 +14,8 @@ If bundler is not being used to manage dependencies, install the gem by executin
 
 ## Usage
 
-This gem loads runtime application configuration from an external source
+This gem loads runtime application configuration from JSON provided by an external source.
+Configurations are stored as immutable Ruby `Data` objects.
 
 For example, with the JSON config
 
@@ -40,15 +38,19 @@ def my_code
 end
 ```
 
-Configurations are stored as immutable Ruby `Data` objects. You can test for optional values:
+You can test for optional values using standard mechanisms:
 
 ```ruby
-optional_stuff if RrxConfig.members.include?(:optional_thing)
-deep_optional_stuff if RrxConfig.optional_thing.members.include?(:deep_thoughts)
+optional_stuff if RrxConfig.respond_to?(:optional_thing)
+deep_optional_stuff if RrxConfig.optional_thing.include?(:deep_thoughts)
+
+optional_flag = RrxConfig.try(:optional).try(:flag) || DEFAULT_FLAG
 
 # Root-level configs can also be tested with the xxxx? syntax
 optional_stuff if RrxConfig.optional_thing?
 ```
+
+## Configuration Sources
 
 ### Environment
 
@@ -59,10 +61,52 @@ Set the `RRX_CONFIG` environment variable to the required JSON configuration
 Loads configuration from an AWS secret that contains the required JSON configuration. Recommended when deploying on AWS.
 By default will use the implicit AWS context that is assigned by the instance role.
 
-Set the `RRX_CONFIG_AWS_SECRET` to the name of the secret to read.
+Set the `RRX_CONFIG_AWS_SECRET` environment variable to the name of the secret to read.
 
-For local integration testing, set `RRX_AWS_PROFILE` to use local AWS credentials. The profile must have been
+For local integration testing, set `RRX_AWS_PROFILE` to use local AWS credentials. The profile must be
 configured in the local AWS client (typically `~/.aws/credentials`).
+
+### Local File Configuration
+
+For development purposes, the gem will also check for the following files:
+
+* `{rails_root}/spec/spec_config.json` if `RAILS_ENV=test`
+* `{rails_root}/local_config.json`
+
+## Database Support
+
+If the loaded config contains a root-level `database` item then it will be used to configure the
+application database instead of `database.yml`.
+
+### AWS RDS IAM Authentication
+
+The gem also adds support for AWS RDS authentication using IAM to MySQL/MariaDB databases. If the RDS instance
+and user account has been configured correctly, replace the `password` argument with `iam: true`. This is supported
+using the `database` configuration or `database.yml`.
+
+The gem will automatically download the required CA certificates and set the necessary client options.
+
+Using JSON configuration:
+```json
+{
+  "database": {
+    "adapter": "mysql2",
+    "host": "rds-db-address...rds.amazonaws.com",
+    "port": 3306,
+    "username": "my_app_user",
+    "iam": true
+  }
+}
+```
+Using `database.yml`:
+```yaml
+production:
+  adapter: mysql2
+  host: rds-db-address...rds.amazonaws.com
+  port: 3306
+  username: my_app_user
+  iam: true
+```
 
 ## Development
 
@@ -72,7 +116,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/rrx/rrx_config. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [code of conduct](https://github.com/[USERNAME]/rrx_config/blob/main/CODE_OF_CONDUCT.md).
+Bug reports and pull requests are welcome on GitHub at https://github.com/rails-rrx/rrx_config. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [code of conduct](https://github.com/[USERNAME]/rrx_config/blob/main/CODE_OF_CONDUCT.md).
 
 ## License
 
@@ -80,4 +124,4 @@ The gem is available as open source under the terms of the [MIT License](https:/
 
 ## Code of Conduct
 
-Everyone interacting in the RrxConfig project's codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/[USERNAME]/rrx_config/blob/main/CODE_OF_CONDUCT.md).
+Everyone interacting in the RrxConfig project's codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/rails-rrc/rrx_config/blob/main/CODE_OF_CONDUCT.md).

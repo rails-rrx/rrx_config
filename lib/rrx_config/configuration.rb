@@ -25,9 +25,9 @@ module RrxConfig
 
     def sources
       [
-        Sources::LocalSource,
+        Sources::EnvironmentSource,
         Sources::AwsSecretSource,
-        Sources::EnvironmentSource
+        Sources::LocalSource
       ]
     end
 

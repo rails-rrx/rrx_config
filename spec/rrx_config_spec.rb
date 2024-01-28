@@ -1,9 +1,20 @@
 # frozen_string_literal: true
 
 require 'rrx_config'
+require 'rrx_config/aws'
 
 describe RrxConfig do
   let(:config) { RrxConfig::Configuration.instance }
+
+  ##
+  # Set the profile variable to enable AWS integration testing
+  def self.test_aws?
+    RrxConfig::Aws.profile?
+  end
+
+  def self.test_aws_iam?
+    test_aws? && RrxConfig.try(:database).try(:iam)
+  end
 
   describe RrxConfig::Environment do
     subject { RrxConfig.env }
@@ -78,9 +89,40 @@ describe RrxConfig do
       expect(config.current).to be_present
       expect(RrxConfig).to have_attributes(spec_config: true)
     end
+  end
+
+  describe 'database' do
+    subject { ActiveRecord::Base.connection_db_config }
+    let(:config) { subject.configuration_hash }
 
     it 'should configure database' do
-      expect(ActiveRecord::Base.connection_db_config.configuration_hash).to include(from_spec_config: true)
+      expect(config).to include(from_spec_config: true)
+    end
+
+    describe 'AWS IAM', if: test_aws_iam? do
+
+      before do
+        expect(RrxConfig.database).not_to respond_to :password
+        expect(config).not_to include(:from_spec_config)
+      end
+
+      it 'should be connected' do
+        ActiveRecord::Base.connection.exec_query 'SELECT 1'
+      end
+
+      it 'should use an IAM config' do
+        is_expected.to be_a RrxConfig::IamHashConfig
+      end
+
+      it 'should generate a configuration hash' do
+        expect(config).to include(:adapter, :host, :username, :password)
+      end
+
+      it 'should configure for every connection attempt' do
+        expect(ActiveRecord::Base.connection_db_config).to receive(:password).at_least(:once).and_call_original
+        ActiveRecord::Base.connection_pool.disconnect!
+        ActiveRecord::Base.connection.exec_query 'SELECT 1'
+      end
     end
   end
 
@@ -118,12 +160,6 @@ describe RrxConfig do
         config.read
         expect(RrxConfig).to be_expected_config
       end
-    end
-
-    ##
-    # Set the profile variable to enable AWS integration testing
-    def self.test_aws?
-      ENV.fetch(RrxConfig::Sources::AwsSecretSource::PROFILE_VARIABLE, false)
     end
 
     describe RrxConfig::Sources::AwsSecretSource, if: test_aws? do

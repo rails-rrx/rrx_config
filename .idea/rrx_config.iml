@@ -12,7 +12,7 @@
     <orderEntry type="jdk" jdkName="Remote-asdf: ruby-3.2.2 (-p53" jdkType="RUBY_SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module-library">
-      <library name="rrx_dev (v0.1.0) [path][gem]" type="rubylib">
+      <library name="rrx_dev (v0.1.2) [path][gem]" type="rubylib">
         <properties>
           <option name="version" value="4" />
         </properties>
@@ -60,6 +60,7 @@
     <orderEntry type="library" scope="PROVIDED" name="aws-eventstream (v1.3.0, Remote-asdf: ruby-3.2.2 (-p53) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="aws-partitions (v1.877.0, Remote-asdf: ruby-3.2.2 (-p53) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="aws-sdk-core (v3.190.1, Remote-asdf: ruby-3.2.2 (-p53) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="aws-sdk-rds (v1.213.0, Remote-asdf: ruby-3.2.2 (-p53) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="aws-sdk-secretsmanager (v1.88.0, Remote-asdf: ruby-3.2.2 (-p53) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="aws-sigv4 (v1.8.0, Remote-asdf: ruby-3.2.2 (-p53) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="base64 (v0.2.0, Remote-asdf: ruby-3.2.2 (-p53) [gem]" level="application" />
@@ -92,6 +93,7 @@
     <orderEntry type="library" scope="PROVIDED" name="minitest (v5.20.0, Remote-asdf: ruby-3.2.2 (-p53) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="msgpack (v1.7.2, Remote-asdf: ruby-3.2.2 (-p53) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="mutex_m (v0.2.0, Remote-asdf: ruby-3.2.2 (-p53) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="mysql2 (v0.5.5, Remote-asdf: ruby-3.2.2 (-p53) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="nokogiri (v1.16.0, Remote-asdf: ruby-3.2.2 (-p53) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="parallel (v1.24.0, Remote-asdf: ruby-3.2.2 (-p53) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="parser (v3.2.2.4, Remote-asdf: ruby-3.2.2 (-p53) [gem]" level="application" />

@@ -9,6 +9,7 @@
     "pool": 5,
     "timeout": 5000,
     "database": "storage/development.sqlite3",
+    "iam": true,
     "from_spec_config": true
   }
 }

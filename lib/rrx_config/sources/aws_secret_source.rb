@@ -1,14 +1,12 @@
 # frozen_string_literal: true
 
 require_relative './base'
+require_relative '../aws'
 
 module RrxConfig
   module Sources
     class AwsSecretSource < Base
       SECRET_VARIABLE  = 'RRX_AWS_CONFIG_SECRET_NAME'
-      PROFILE_VARIABLE = 'RRX_AWS_PROFILE'
-      REGION_VARIABLE  = 'RRX_AWS_REGION'
-      REGION_DEFAULT   = 'us-west-2'
 
       def read
         read_secret if secret_id
@@ -45,20 +43,12 @@ module RrxConfig
         @secret_name == :- ? nil : @secret_name
       end
 
-      def credentials_profile
-        profile = Rails.env.production? ? nil : ENV.fetch(PROFILE_VARIABLE, nil)
-        profile || 'default'
-      end
-
       ##
       # @return [Aws::SecretsManager::Client]
       def client
         @client ||= begin
                       require 'aws-sdk-secretsmanager'
-                      Aws::SecretsManager::Client.new(
-                        region:  ENV.fetch(REGION_VARIABLE, REGION_DEFAULT),
-                        profile: credentials_profile
-                      )
+                      ::Aws::SecretsManager::Client.new(**Aws.client_args)
                     end
       end
 
