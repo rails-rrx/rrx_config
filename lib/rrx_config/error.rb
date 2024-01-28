@@ -1,5 +1,5 @@
 # frozen_string_literal: true
 
 module RrxConfig
-  VERSION = "0.1.2"
+  class Error < StandardError; end
 end

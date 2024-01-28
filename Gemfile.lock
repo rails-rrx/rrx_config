@@ -1,28 +1,8 @@
 PATH
-  remote: ../rrx_dev
-  specs:
-    rrx_dev (0.1.1)
-      active_record_query_trace
-      activesupport (~> 7.1.0)
-      bootsnap
-      debug
-      factory_bot_rails
-      listen
-      railties (~> 7.1.0)
-      rake (>= 13.0)
-      rspec (>= 3.0)
-      rspec-parameterized
-      rspec-rails
-      rswag-specs
-      rubocop (>= 1.21)
-      rubocop-rails
-      spring
-      thor
-
-PATH
   remote: .
   specs:
-    rrx_config (0.1.0)
+    rrx_config (0.1.2)
+      activesupport
       railties
 
 GEM
@@ -72,6 +52,9 @@ GEM
       aws-partitions (~> 1, >= 1.651.0)
       aws-sigv4 (~> 1.8)
       jmespath (~> 1, >= 1.6.1)
+    aws-sdk-rds (1.213.0)
+      aws-sdk-core (~> 3, >= 3.188.0)
+      aws-sigv4 (~> 1.1)
     aws-sdk-secretsmanager (1.88.0)
       aws-sdk-core (~> 3, >= 3.188.0)
       aws-sigv4 (~> 1.1)
@@ -122,6 +105,7 @@ GEM
     minitest (5.20.0)
     msgpack (1.7.2)
     mutex_m (0.2.0)
+    mysql2 (0.5.5)
     nokogiri (1.16.0-x86_64-linux)
       racc (~> 1.4)
     parallel (1.24.0)
@@ -170,6 +154,23 @@ GEM
     reline (0.4.1)
       io-console (~> 0.5)
     rexml (3.2.6)
+    rrx_dev (0.1.2)
+      active_record_query_trace
+      activesupport (~> 7.1.0)
+      bootsnap
+      debug
+      factory_bot_rails
+      listen
+      railties (~> 7.1.0)
+      rake (>= 13.0)
+      rspec (>= 3.0)
+      rspec-parameterized
+      rspec-rails
+      rswag-specs
+      rubocop (>= 1.21)
+      rubocop-rails
+      spring
+      thor
     rspec (3.12.0)
       rspec-core (~> 3.12.0)
       rspec-expectations (~> 3.12.0)
@@ -245,9 +246,11 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
+  aws-sdk-rds
   aws-sdk-secretsmanager
+  mysql2
   rrx_config!
-  rrx_dev!
+  rrx_dev
   sqlite3
 
 BUNDLED WITH

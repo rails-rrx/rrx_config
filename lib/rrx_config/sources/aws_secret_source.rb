@@ -1,14 +1,15 @@
 # frozen_string_literal: true
 
 require_relative './base'
+require_relative '../aws'
+require_relative '../error'
 
 module RrxConfig
   module Sources
     class AwsSecretSource < Base
       SECRET_VARIABLE  = 'RRX_AWS_CONFIG_SECRET_NAME'
-      PROFILE_VARIABLE = 'RRX_AWS_PROFILE'
-      REGION_VARIABLE  = 'RRX_AWS_REGION'
-      REGION_DEFAULT   = 'us-west-2'
+
+      class GetAwsSecretError < Error; end
 
       def read
         read_secret if secret_id
@@ -19,14 +20,14 @@ module RrxConfig
       def write(value)
         raise NotImplementedError unless Rails.env.test?
 
-        puts "Writing secret #{secret_id}"
+        RrxConfig.info "Writing secret #{secret_id}"
         result = client.create_secret({
                                name:                           secret_id,
                                secret_string:                  value,
                                force_overwrite_replica_secret: true,
                                description:                    'Integration test'
                              })
-        puts "Secret created: #{result.arn}"
+        RrxConfig.info "Secret created: #{result.arn}"
       end
 
       ##
@@ -34,7 +35,7 @@ module RrxConfig
       def delete
         raise NotImplementedError unless Rails.env.test?
 
-        puts "Deleting secret #{secret_id}"
+        RrxConfig.info "Deleting secret #{secret_id}"
         client.delete_secret({ secret_id:, force_delete_without_recovery: true }) rescue nil
       end
 
@@ -45,25 +46,20 @@ module RrxConfig
         @secret_name == :- ? nil : @secret_name
       end
 
-      def credentials_profile
-        profile = Rails.env.production? ? nil : ENV.fetch(PROFILE_VARIABLE, nil)
-        profile || 'default'
-      end
-
       ##
       # @return [Aws::SecretsManager::Client]
       def client
         @client ||= begin
                       require 'aws-sdk-secretsmanager'
-                      Aws::SecretsManager::Client.new(
-                        region:  ENV.fetch(REGION_VARIABLE, REGION_DEFAULT),
-                        profile: credentials_profile
-                      )
+                      ::Aws::SecretsManager::Client.new(**Aws.client_args)
                     end
       end
 
       def read_secret
         read_json client.get_secret_value({secret_id:}).secret_string
+      rescue x
+        RrxConfig.error "Failed to read AWS secret #{secret_id}: #{x}"
+        raise GetAwsSecretError, "Failed to read AWS secret #{secret_id}", x.backtrace
       end
     end
   end

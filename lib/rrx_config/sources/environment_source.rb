@@ -7,7 +7,6 @@ module RrxConfig
     class EnvironmentSource < Base
       VARIABLE_NAME = 'RRX_CONFIG'
 
-      # @return [Struct, nil]
       def read
         read_json ENV.fetch(VARIABLE_NAME, nil)
       end

@@ -12,16 +12,21 @@ module RrxConfig
       # @param [String, nil] value
       # @return [Data, nil]
       def read_json(value)
-        value ? json_to_data(JSON.parse(value, { symbolize_keys: true })) : nil
+        if value
+          result = json_to_data(JSON.parse(value, { symbolize_keys: true }))
+          RrxConfig.info 'Successfully read config from %s (%s)' % [
+            self.class.name.split('::').last.sub('Source', ''),
+            result.members.join(', ')
+          ]
+          result
+        else
+          nil
+        end
       end
 
       # @param [Hash] json
       def json_to_data(json)
-        json = json.transform_values do |v|
-          v.is_a?(Hash) ? json_to_data(v) : v
-        end
-
-        Data.define(*json.keys).new(**json)
+        Configuration.hash_data(json)
       end
     end
   end

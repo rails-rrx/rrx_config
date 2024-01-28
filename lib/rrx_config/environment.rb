@@ -1,6 +1,13 @@
 # frozen_string_literal: true
+require_relative './error'
 
 module RrxConfig
+  class EnvironmentError < Error
+    def initialize(msg)
+      super("Invalid environment '#{msg}'")
+    end
+  end
+
   class Environment < ActiveSupport::StringInquirer
     RRX_ENVIRONMENT_VARIABLE = 'RRX_ENVIRONMENT'
     RRX_ENVIRONMENT_DEFAULT  = 'development'

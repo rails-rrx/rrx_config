@@ -10,7 +10,7 @@ require 'rspec/rails'
 
 # Pre-load support files
 require 'rrx_dev/spec'
-Dir[Rails.root.join('spec/support/**/*.rb')].sort.each { |f| require f }
+Dir[File.join(__dir__, 'support/**/*.rb')].sort.each { |f| require f }
 
 # Checks for pending migrations and applies them before tests are run.
 # If you are not using ActiveRecord, you can remove these lines.

@@ -25,14 +25,20 @@ module RrxConfig
 
     def sources
       [
-        Sources::LocalSource,
+        Sources::EnvironmentSource,
         Sources::AwsSecretSource,
-        Sources::EnvironmentSource
+        Sources::LocalSource
       ]
     end
 
     def default_config
       Data.define.new
+    end
+
+    class << self
+      def hash_data(hash)
+        Data.define(*hash.keys).new(**hash.transform_values { |v| v.is_a?(Hash) ? hash_data(v) : v })
+      end
     end
   end
 
