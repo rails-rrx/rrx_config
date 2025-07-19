@@ -41,6 +41,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'aws-sdk-rds'
   spec.add_development_dependency 'aws-sdk-secretsmanager'
   spec.add_development_dependency 'mysql2'
-  spec.add_development_dependency 'rrx_dev'
+  spec.add_development_dependency 'rrx_dev', RrxConfig::DEPENDENCY_VERSION
   spec.add_development_dependency 'sqlite3'
 end
