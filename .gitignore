@@ -9,6 +9,7 @@
 /spec/dummy/storage
 /spec/dummy/tmp
 /tmp/
+/.idea/
 
 !**/*.keep
 
